@@ -1,6 +1,8 @@
 <?php
 
 return [
+    'developer_tools_email' => env('CMS_DEVELOPER_TOOLS_EMAIL', '1017website@gmail.com'),
+
     'superadmin' => [
         'name' => env('CMS_SUPERADMIN_NAME', 'Superadmin FPAI'),
         'email' => env('CMS_SUPERADMIN_EMAIL', 'superadmin@fpai.or.id'),

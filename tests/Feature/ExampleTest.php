@@ -53,11 +53,46 @@ class ExampleTest extends TestCase
             ->assertSee('Masuk ke CMS');
     }
 
-    public function test_developer_can_open_developer_tools_but_not_user_management(): void
+    public function test_only_configured_email_can_open_developer_tools(): void
     {
-        $developer = User::query()->where('role', 'developer')->firstOrFail();
-        $this->actingAs($developer)->get('/cms/developer-tools')->assertOk()->assertSee('Storage Link');
-        $this->actingAs($developer)->get('/cms/users')->assertForbidden();
+        $allowedUser = User::factory()->create([
+            'email' => config('cms.developer_tools_email'),
+            'role' => 'developer',
+        ]);
+        $otherDeveloper = User::query()->where('role', 'developer')->firstOrFail();
+        $superadmin = User::query()->where('role', 'superadmin')->firstOrFail();
+
+        $this->actingAs($allowedUser)
+            ->get('/cms/developer-tools')
+            ->assertOk()
+            ->assertSee('Storage Link');
+
+        $this->actingAs($otherDeveloper)
+            ->get('/cms/developer-tools')
+            ->assertForbidden();
+
+        $this->actingAs($superadmin)
+            ->get('/cms/developer-tools')
+            ->assertForbidden();
+    }
+
+    public function test_developer_tools_menu_is_only_visible_to_configured_email(): void
+    {
+        $allowedUser = User::factory()->create([
+            'email' => strtoupper(config('cms.developer_tools_email')),
+            'role' => 'developer',
+        ]);
+        $otherDeveloper = User::query()->where('role', 'developer')->firstOrFail();
+
+        $this->actingAs($allowedUser)
+            ->get('/cms')
+            ->assertOk()
+            ->assertSee('Developer Tools');
+
+        $this->actingAs($otherDeveloper)
+            ->get('/cms')
+            ->assertOk()
+            ->assertDontSee('Developer Tools');
     }
 
     public function test_superadmin_can_update_frontend_page_content(): void

@@ -56,6 +56,9 @@ class User extends Authenticatable
 
     public function canRunDeveloperTools(): bool
     {
-        return in_array($this->role, ['superadmin', 'developer'], true);
+        $developerToolsEmail = trim((string) config('cms.developer_tools_email'));
+
+        return $developerToolsEmail !== ''
+            && strcasecmp(trim((string) $this->email), $developerToolsEmail) === 0;
     }
 }

@@ -42,7 +42,7 @@ Route::prefix('cms')->name('cms.')->middleware('auth')->group(function () {
         Route::resource('users', UserController::class)->except('show');
     });
 
-    Route::middleware('role:superadmin,developer')->group(function () {
+    Route::middleware('developer.tools')->group(function () {
         Route::get('/developer-tools', [ToolController::class, 'index'])->name('tools.index');
         Route::post('/developer-tools', [ToolController::class, 'run'])->name('tools.run');
     });

@@ -11,7 +11,7 @@ Website Institutional Profile FPAI berbasis Laravel 12. Frontend menggunakan tem
 - Analitik internal: page views, pengunjung unik berbasis sesi, tren harian, referrer, browser, dan bagian paling sering dilihat.
 - Role `superadmin` dan `developer`.
 - Setiap pengguna dapat mengganti kata sandinya sendiri dari menu **Ganti Password**.
-- Developer Tools untuk `migrate`, `optimize:clear`, dan `storage:link` dengan daftar perintah tetap dan proteksi login/CSRF.
+- Developer Tools untuk `migrate`, `optimize:clear`, dan `storage:link` dengan daftar perintah tetap serta akses khusus email `1017website@gmail.com`.
 
 ## Akses
 
@@ -25,7 +25,7 @@ Akun awal setelah seeding:
 | Superadmin | `superadmin@fpai.or.id` | `FpaiSuperadmin!2026` |
 | Developer | `developer@fpai.or.id` | `FpaiDeveloper!2026` |
 
-Ganti kata sandi awal melalui menu **Pengguna** setelah login. Nilai akun awal bisa diubah lewat variabel `CMS_SUPERADMIN_*` dan `CMS_DEVELOPER_*` sebelum menjalankan seeder.
+Ganti kata sandi awal melalui menu **Pengguna** setelah login. Nilai akun awal bisa diubah lewat variabel `CMS_SUPERADMIN_*` dan `CMS_DEVELOPER_*` sebelum menjalankan seeder. Email yang boleh membuka Developer Tools dapat diatur melalui `CMS_DEVELOPER_TOOLS_EMAIL` (bawaan: `1017website@gmail.com`).
 
 ## Menambah halaman frontend
 

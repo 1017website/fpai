@@ -15,6 +15,7 @@ return Application::configure(basePath: dirname(__DIR__))
 
         $middleware->alias([
             'role' => \App\Http\Middleware\EnsureRole::class,
+            'developer.tools' => \App\Http\Middleware\EnsureCanRunDeveloperTools::class,
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {
