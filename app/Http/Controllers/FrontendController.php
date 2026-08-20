@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\BrochurePage;
+use App\Models\NewsArticle;
 use App\Models\SiteSetting;
 use App\Models\VisitorEvent;
 use Illuminate\Http\JsonResponse;
@@ -15,10 +16,14 @@ class FrontendController extends Controller
     {
         $pages = BrochurePage::query()->where('is_active', true)->orderBy('position')->get();
         $settings = SiteSetting::values();
+        $popupArticle = NewsArticle::query()->published()
+            ->where('show_in_popup', true)
+            ->latest('published_at')
+            ->first();
 
         $this->record($request, 'pageview');
 
-        return view('frontend.home', compact('pages', 'settings'));
+        return view('frontend.home', compact('pages', 'settings', 'popupArticle'));
     }
 
     public function section(Request $request): JsonResponse

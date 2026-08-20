@@ -103,6 +103,11 @@ button,input,select,textarea { font:inherit; }
 .login-card .btn { width:100%; padding:12px; margin-top:8px; }
 .error-text { color:var(--danger); font-size:12px; }
 .hint { padding:12px 14px; border-radius:8px; background:#fffaeb; color:#7a2e0e; font-size:12px; line-height:1.5; margin-bottom:18px; }
+.content-editor { min-height:320px !important; line-height:1.7; }
+.news-form-preview { display:block; width:min(100%,520px); max-height:320px; object-fit:cover; border:1px solid var(--line); border-radius:10px; }
+.cms-pagination { display:flex; align-items:center; justify-content:center; gap:20px; padding:18px 20px; border-top:1px solid var(--line); color:var(--muted); font-size:12px; }
+.cms-pagination a { color:var(--navy-2); font-weight:800; text-decoration:none; }
+.cms-pagination span { opacity:.55; }
 
 @media (max-width:1180px) {
     .stat-grid { grid-template-columns:repeat(2,minmax(0,1fr)); }

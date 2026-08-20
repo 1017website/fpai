@@ -18,6 +18,7 @@
         <nav>
             <a class="{{ request()->routeIs('cms.dashboard') ? 'active' : '' }}" href="{{ route('cms.dashboard') }}"><span class="nav-icon">⌂</span>Dashboard</a>
             <a class="{{ request()->routeIs('cms.pages.*') ? 'active' : '' }}" href="{{ route('cms.pages.index') }}"><span class="nav-icon">▣</span>Halaman Frontend</a>
+            <a class="{{ request()->routeIs('cms.news.*') ? 'active' : '' }}" href="{{ route('cms.news.index') }}"><span class="nav-icon">◆</span>Berita</a>
             <a class="{{ request()->routeIs('cms.settings.*') ? 'active' : '' }}" href="{{ route('cms.settings.edit') }}"><span class="nav-icon">⚙</span>Pengaturan & SEO</a>
             <a class="{{ request()->routeIs('cms.analytics') ? 'active' : '' }}" href="{{ route('cms.analytics') }}"><span class="nav-icon">↗</span>Analitik</a>
             <a class="{{ request()->routeIs('cms.profile.*') ? 'active' : '' }}" href="{{ route('cms.profile.password.edit') }}"><span class="nav-icon">●</span>Ganti Password</a>

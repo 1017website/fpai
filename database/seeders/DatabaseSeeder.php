@@ -94,5 +94,7 @@ class DatabaseSeeder extends Seeder
                 'position' => $position,
             ]);
         }
+
+        $this->call(NewsSeeder::class);
     }
 }

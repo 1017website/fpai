@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Cms;
 
 use App\Http\Controllers\Controller;
 use App\Models\BrochurePage;
+use App\Models\NewsArticle;
 use App\Models\User;
 use App\Models\VisitorEvent;
 use Illuminate\View\View;
@@ -18,6 +19,7 @@ class DashboardController extends Controller
             'week' => (clone $pageviews)->where('visited_at', '>=', now()->subDays(7))->count(),
             'month' => (clone $pageviews)->where('visited_at', '>=', now()->subDays(30))->count(),
             'pages' => BrochurePage::query()->where('is_active', true)->count(),
+            'news' => NewsArticle::query()->published()->count(),
             'users' => User::query()->count(),
         ];
 

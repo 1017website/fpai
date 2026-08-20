@@ -4,14 +4,18 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\Cms\AnalyticsController;
 use App\Http\Controllers\Cms\DashboardController;
 use App\Http\Controllers\Cms\PageController;
+use App\Http\Controllers\Cms\NewsController as CmsNewsController;
 use App\Http\Controllers\Cms\ProfileController;
 use App\Http\Controllers\Cms\SettingController;
 use App\Http\Controllers\Cms\ToolController;
 use App\Http\Controllers\Cms\UserController;
 use App\Http\Controllers\FrontendController;
+use App\Http\Controllers\NewsController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', [FrontendController::class, 'index'])->name('home');
+Route::get('/berita', [NewsController::class, 'index'])->name('news.index');
+Route::get('/berita/{article}', [NewsController::class, 'show'])->name('news.show');
 Route::post('/analytics/section', [FrontendController::class, 'section'])->middleware('throttle:120,1')->name('analytics.section');
 
 Route::middleware('guest')->group(function () {
@@ -30,6 +34,7 @@ Route::prefix('cms')->name('cms.')->middleware('auth')->group(function () {
     Route::post('/pages', [PageController::class, 'store'])->name('pages.store');
     Route::get('/pages/{page}/edit', [PageController::class, 'edit'])->name('pages.edit');
     Route::put('/pages/{page}', [PageController::class, 'update'])->name('pages.update');
+    Route::resource('news', CmsNewsController::class)->parameters(['news' => 'article'])->except('show');
     Route::get('/settings', [SettingController::class, 'edit'])->name('settings.edit');
     Route::put('/settings', [SettingController::class, 'update'])->name('settings.update');
 

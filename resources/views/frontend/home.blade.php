@@ -55,6 +55,7 @@
         @foreach($pages->where('show_in_navigation', true) as $page)
             <a href="#{{ $page->slug }}" data-target="{{ $page->slug }}">{{ $page->navigation_label ?: $page->label }}</a>
         @endforeach
+        <a class="news-nav-link" href="{{ route('news.index') }}">Berita</a>
     </nav>
 </header>
 <div class="progress-rail"></div><div class="page-counter">01 / {{ str_pad((string) $pages->count(), 2, '0', STR_PAD_LEFT) }}</div>
@@ -69,6 +70,17 @@
     @endforeach
 </main>
 <footer class="site-footer"><img src="{{ $logo }}" alt="{{ $value('site_name', 'FPAI') }}"><h3>{{ $value('organization_name', 'Forum Pengayom Advokat Indonesia') }}</h3><p>{{ $value('tagline', 'Menyatukan · Mengayomi · Menguatkan') }}</p></footer>
+@include('frontend.partials.audio-player')
+@if($popupArticle)
+<div class="news-popup" data-popup-id="{{ $popupArticle->id }}" role="dialog" aria-modal="true" aria-labelledby="news-popup-title" aria-hidden="true">
+    <button class="news-popup-backdrop" type="button" aria-label="Tutup popup berita"></button>
+    <article class="news-popup-card">
+        <button class="news-popup-close" type="button" aria-label="Tutup">×</button>
+        @if($popupArticle->image_path)<img src="{{ asset($popupArticle->image_path) }}" alt="{{ $popupArticle->image_alt ?: $popupArticle->title }}">@endif
+        <div class="news-popup-content"><span>Berita terbaru</span><h2 id="news-popup-title">{{ $popupArticle->title }}</h2><p>{{ $popupArticle->excerpt }}</p><div class="news-popup-actions"><a href="{{ route('news.show', $popupArticle) }}">Baca selengkapnya</a><button type="button">Nanti saja</button></div></div>
+    </article>
+</div>
+@endif
 <div class="image-lightbox" role="dialog" aria-modal="true" aria-label="Pratinjau halaman" aria-hidden="true">
     <div class="lightbox-toolbar"><button class="lightbox-zoom-out" type="button" aria-label="Perkecil">−</button><span class="lightbox-zoom-value">100%</span><button class="lightbox-zoom-in" type="button" aria-label="Perbesar">+</button><button class="lightbox-reset" type="button" aria-label="Ukuran semula">↺</button><button class="lightbox-close" type="button" aria-label="Tutup">×</button></div>
     <div class="lightbox-stage"><img class="lightbox-image" alt=""></div>
@@ -77,7 +89,7 @@
 @if($value('meta_pixel_id'))<noscript><img height="1" width="1" style="display:none" src="https://www.facebook.com/tr?id={{ urlencode($value('meta_pixel_id')) }}&ev=PageView&noscript=1" alt=""></noscript>@endif
 <script>
 window.addEventListener('load',()=>{document.body.classList.remove('loading');setTimeout(()=>document.querySelector('.preloader')?.classList.add('hide'),250)});
-const sections=[...document.querySelectorAll('.page-section')];const navLinks=[...document.querySelectorAll('.site-nav a')];const counter=document.querySelector('.page-counter');const rail=document.querySelector('.progress-rail');
+const sections=[...document.querySelectorAll('.page-section')];const navLinks=[...document.querySelectorAll('.site-nav a[data-target]')];const counter=document.querySelector('.page-counter');const rail=document.querySelector('.progress-rail');
 sections.forEach((s,i)=>{const b=document.createElement('button');b.title=`Halaman ${i+1}`;b.setAttribute('aria-label',`Ke halaman ${i+1}`);b.onclick=()=>s.scrollIntoView({behavior:'smooth'});rail.appendChild(b)});const dots=[...rail.children];let lastTracked='';
 const trackSection=slug=>{if(slug===lastTracked)return;lastTracked=slug;if(typeof gtag==='function')gtag('event','section_view',{section_id:slug});if(typeof fbq==='function')fbq('trackCustom','SectionView',{section_id:slug});fetch(@json(route('analytics.section')),{method:'POST',headers:{'Content-Type':'application/json','X-CSRF-TOKEN':@json(csrf_token()),'Accept':'application/json'},body:JSON.stringify({section_slug:slug}),keepalive:true}).catch(()=>{})};
 const io=new IntersectionObserver(entries=>{entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in-view');const p=+e.target.dataset.page;counter.textContent=`${String(p).padStart(2,'0')} / ${String(sections.length).padStart(2,'0')}`;dots.forEach((d,i)=>d.classList.toggle('active',i===p-1));const active=[...navLinks].reverse().find(a=>{const t=document.querySelector(a.getAttribute('href'));return t&&t.offsetTop<=window.scrollY+180});navLinks.forEach(a=>a.classList.toggle('active',a===active));trackSection(e.target.id)}})},{threshold:.48});
@@ -89,6 +101,7 @@ const openLightbox=index=>{lastFocused=document.activeElement;showLightboxImage(
 const closeLightbox=()=>{lightbox.classList.remove('open');lightbox.setAttribute('aria-hidden','true');document.body.classList.remove('lightbox-open');lastFocused?.focus()};
 pageImages.forEach((image,index)=>{image.addEventListener('click',()=>openLightbox(index));image.addEventListener('keydown',event=>{if(event.key==='Enter'||event.key===' '){event.preventDefault();openLightbox(index)}})});
 lightbox.querySelector('.lightbox-close').onclick=closeLightbox;lightbox.querySelector('.lightbox-prev').onclick=()=>showLightboxImage(lightboxIndex-1);lightbox.querySelector('.lightbox-next').onclick=()=>showLightboxImage(lightboxIndex+1);lightbox.querySelector('.lightbox-zoom-in').onclick=()=>{lightboxZoom=Math.min(3,lightboxZoom+.25);applyZoom()};lightbox.querySelector('.lightbox-zoom-out').onclick=()=>{lightboxZoom=Math.max(.5,lightboxZoom-.25);applyZoom()};lightbox.querySelector('.lightbox-reset').onclick=()=>{lightboxZoom=1;applyZoom()};lightbox.addEventListener('click',event=>{if(event.target===lightbox||event.target.classList.contains('lightbox-stage'))closeLightbox()});document.addEventListener('keydown',event=>{if(!lightbox.classList.contains('open'))return;if(event.key==='Escape')closeLightbox();if(event.key==='ArrowLeft')showLightboxImage(lightboxIndex-1);if(event.key==='ArrowRight')showLightboxImage(lightboxIndex+1);if(event.key==='+'){lightboxZoom=Math.min(3,lightboxZoom+.25);applyZoom()}if(event.key==='-'){lightboxZoom=Math.max(.5,lightboxZoom-.25);applyZoom()}});
+const newsPopup=document.querySelector('.news-popup');if(newsPopup){const closeNewsPopup=()=>{newsPopup.classList.remove('open');newsPopup.setAttribute('aria-hidden','true');document.body.classList.remove('popup-open')};newsPopup.querySelectorAll('.news-popup-close,.news-popup-backdrop,.news-popup-actions button').forEach(button=>button.addEventListener('click',closeNewsPopup));window.addEventListener('load',()=>setTimeout(()=>{newsPopup.classList.add('open');newsPopup.setAttribute('aria-hidden','false');document.body.classList.add('popup-open');newsPopup.querySelector('.news-popup-close').focus()},900));document.addEventListener('keydown',event=>{if(event.key==='Escape'&&newsPopup.classList.contains('open'))closeNewsPopup()})}
 </script>
 </body>
 </html>
