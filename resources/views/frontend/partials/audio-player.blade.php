@@ -3,7 +3,7 @@
     <button class="fpai-audio-toggle" type="button" aria-label="Putar lagu">▶</button>
     <div class="fpai-audio-info">
         <span class="fpai-audio-status">Klik untuk memutar</span>
-        <strong class="fpai-audio-title">Rumah Pengayoman</strong>
+        <strong class="fpai-audio-title">Satukan Langkah</strong>
         <div class="fpai-audio-progress-wrap">
             <input class="fpai-audio-progress" type="range" min="0" max="100" value="0" step="0.1" aria-label="Posisi lagu">
             <small class="fpai-audio-time">00:00</small>
@@ -24,8 +24,8 @@
     const progress=player.querySelector('.fpai-audio-progress');
     const time=player.querySelector('.fpai-audio-time');
     const tracks=[
-        {title:'Rumah Pengayoman',label:'Hymne FPAI',src:@json(asset('audio/fpai-hymne.mp3'))},
         {title:'Satukan Langkah',label:'Mars FPAI',src:@json(asset('audio/fpai-mars.mp3'))},
+        {title:'Rumah Pengayoman',label:'Hymne FPAI',src:@json(asset('audio/fpai-hymne.mp3'))},
     ];
     let current=0;
     const formatTime=seconds=>{if(!Number.isFinite(seconds))return'00:00';const minutes=Math.floor(seconds/60);const rest=Math.floor(seconds%60);return`${String(minutes).padStart(2,'0')}:${String(rest).padStart(2,'0')}`};
