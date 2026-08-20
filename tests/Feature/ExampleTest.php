@@ -37,6 +37,22 @@ class ExampleTest extends TestCase
         $this->actingAs($admin)->get('/cms/users')->assertOk()->assertSee('Akun & Hak Akses', false);
     }
 
+    public function test_authenticated_user_visiting_cms_login_is_redirected_to_cms_dashboard(): void
+    {
+        $admin = User::query()->where('role', 'superadmin')->firstOrFail();
+
+        $this->actingAs($admin)
+            ->get('/cms/login')
+            ->assertRedirect('/cms');
+    }
+
+    public function test_guest_can_still_open_cms_login(): void
+    {
+        $this->get('/cms/login')
+            ->assertOk()
+            ->assertSee('Masuk ke CMS');
+    }
+
     public function test_developer_can_open_developer_tools_but_not_user_management(): void
     {
         $developer = User::query()->where('role', 'developer')->firstOrFail();

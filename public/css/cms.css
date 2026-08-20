@@ -104,7 +104,8 @@ button,input,select,textarea { font:inherit; }
 .error-text { color:var(--danger); font-size:12px; }
 .hint { padding:12px 14px; border-radius:8px; background:#fffaeb; color:#7a2e0e; font-size:12px; line-height:1.5; margin-bottom:18px; }
 .content-editor { min-height:320px !important; line-height:1.7; }
-.news-form-preview { display:block; width:min(100%,520px); max-height:320px; object-fit:cover; border:1px solid var(--line); border-radius:10px; }
+.news-form-preview { display:flex; align-items:center; justify-content:center; width:min(100%,420px); height:240px; overflow:hidden; padding:10px; background:#f4f7fa; border:1px solid var(--line); border-radius:10px; }
+.news-form-preview img { display:block; width:100%; height:100%; object-fit:contain; border-radius:6px; }
 .cms-pagination { display:flex; align-items:center; justify-content:center; gap:20px; padding:18px 20px; border-top:1px solid var(--line); color:var(--muted); font-size:12px; }
 .cms-pagination a { color:var(--navy-2); font-weight:800; text-decoration:none; }
 .cms-pagination span { opacity:.55; }
